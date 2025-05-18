@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowRight, Play } from "lucide-react"
+import { Play } from "lucide-react"
 import Link from "next/link"
 
 export default function DemoPreview() {
@@ -68,120 +67,239 @@ export default function DemoPreview() {
         </TabsList>
 
         <TabsContent value="interactive" className="mt-0">
-          <div className="bg-[#0a0a25] rounded-xl p-6 md:p-8 shadow-lg">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Try It Yourself</h3>
-                <p className="text-gray-400 mb-6">
-                  See how StoryboardAI transforms a simple lesson plan into a visual storyboard. Interact with the demo
-                  below to experience the transformation.
-                </p>
+          <div className="bg-[#0a0a25] rounded-xl p-6 md:p-8 shadow-lg relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#3a00b0] rounded-full filter blur-[120px] opacity-10"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#00f0ff] rounded-full filter blur-[120px] opacity-10"></div>
 
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Sample Lesson Plan</label>
-                    <select
-                      className="w-full bg-[#0a0a35] border border-[#3a00b0] rounded-md p-2 text-white"
-                      value={selectedLessonPlan}
-                      onChange={(e) => setSelectedLessonPlan(e.target.value)}
-                    >
-                      <option value="photosynthesis">Introduction to Photosynthesis</option>
-                      <option value="waterCycle">The Water Cycle</option>
-                      <option value="egypt">Ancient Egyptian Civilization</option>
-                      <option value="coding">Basic Coding Concepts</option>
-                    </select>
+              {/* Grid lines */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="h-full w-full border-[0.5px] border-[#00f0ff] border-opacity-30 grid grid-cols-6 grid-rows-4">
+                  {Array.from({ length: 24 }).map((_, i) => (
+                    <div key={i} className="border-[0.5px] border-[#00f0ff] border-opacity-20"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <h3 className="text-2xl font-bold mb-8 text-center relative z-10">
+              Photosynthesis Storyboard Generation
+              <span className="block text-sm font-normal text-gray-400 mt-2">
+                Watch how a lesson plan transforms into a visual storyboard
+              </span>
+            </h3>
+
+            <div className="relative z-10 max-w-4xl mx-auto">
+              {/* Process flowchart */}
+              <div className="relative">
+                {/* Central timeline */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-[#3a00b0] to-[#00f0ff] transform -translate-x-1/2"></div>
+
+                {/* Animated particles flowing down the timeline */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2 overflow-hidden">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full bg-[#00f0ff]"
+                      style={{
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        top: `${i * 20}%`,
+                        opacity: 0.7,
+                        animation: `flowDown 3s infinite ${i * 0.5}s`,
+                      }}
+                    ></div>
+                  ))}
+                </div>
+
+                {/* Step 1: Lesson Plan */}
+                <div className="flex flex-col md:flex-row items-center mb-16 relative">
+                  <div className="md:w-5/12 md:pr-8 mb-6 md:mb-0 md:text-right order-2 md:order-1">
+                    <h4 className="text-xl font-bold mb-2 text-[#00f0ff]">Lesson Plan Input</h4>
+                    <p className="text-gray-400">
+                      Teacher uploads "Introduction to Photosynthesis" lesson plan with key concepts and learning
+                      objectives
+                    </p>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Storyboard Style</label>
-                    <select className="w-full bg-[#0a0a35] border border-[#3a00b0] rounded-md p-2 text-white">
-                      <option>Educational</option>
-                      <option>Minimalist</option>
-                      <option>Illustrated</option>
-                      <option>Technical</option>
-                    </select>
+                  <div className="md:w-2/12 flex justify-center items-center order-1 md:order-2 mb-6 md:mb-0">
+                    <div className="w-16 h-16 rounded-full bg-[#0a0a35] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="text-[#00f0ff] font-bold">1</div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Image Generation</label>
-                    <div className="flex items-center">
-                      <input type="checkbox" id="localGeneration" className="mr-2" />
-                      <label htmlFor="localGeneration">Use local image generation</label>
+                  <div className="md:w-5/12 md:pl-8 order-3">
+                    <div className="bg-[#0a0a35] p-3 rounded-lg border border-[#3a00b0]/50">
+                      <div className="text-xs text-gray-400 mb-1">Lesson Plan Excerpt:</div>
+                      <div className="text-sm">
+                        <p className="mb-1">
+                          <span className="text-[#00f0ff]">Topic:</span> Introduction to Photosynthesis
+                        </p>
+                        <p className="mb-1">
+                          <span className="text-[#00f0ff]">Objective:</span> Students will understand how plants convert
+                          sunlight into energy
+                        </p>
+                        <p>
+                          <span className="text-[#00f0ff]">Key Concepts:</span> Light absorption, chloroplasts, CO₂
+                          intake, glucose production
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <Link href="/storyboard-preview">
-                  <Button
-                    className="w-full bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] hover:opacity-90 transition-opacity"
-                    onClick={handleGenerateStoryboard}
-                  >
-                    {previewLoading ? "Generating..." : "Generate Storyboard"}
-                  </Button>
-                </Link>
-              </div>
-
-              <div className="relative">
-                <div className="bg-[#0a0a35] rounded-lg p-4 h-full">
-                  <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-medium">Preview</h4>
-                    <Link href="/storyboard-preview">
-                      <Button variant="ghost" size="sm" className="text-[#00f0ff]">
-                        <ArrowRight className="w-4 h-4 mr-1" /> Full Preview
-                      </Button>
-                    </Link>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 h-[calc(100%-40px)] overflow-auto">
-                    {previewLoading ? (
-                      <div className="col-span-2 flex items-center justify-center h-full">
-                        <div className="flex flex-col items-center">
-                          <div className="w-10 h-10 border-4 border-t-[#00f0ff] border-r-[#3a00b0] border-b-[#00f0ff] border-l-[#3a00b0] rounded-full animate-spin mb-4"></div>
-                          <p className="text-[#00f0ff]">Generating storyboard...</p>
+                {/* Step 2: AI Analysis */}
+                <div className="flex flex-col md:flex-row items-center mb-16 relative">
+                  <div className="md:w-5/12 md:pr-8 order-3 md:order-1">
+                    <div className="bg-[#0a0a35] p-3 rounded-lg border border-[#3a00b0]/50">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-xs text-gray-400">AI Analysis Results:</div>
+                        <div className="text-xs text-[#00f0ff] animate-pulse">Processing...</div>
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 bg-[#00f0ff] rounded-full mr-2"></div>
+                          <p>Identified 6 key visual scenes</p>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 bg-[#00f0ff] rounded-full mr-2"></div>
+                          <p>Extracted scientific terminology</p>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 bg-[#00f0ff] rounded-full mr-2"></div>
+                          <p>Determined appropriate visual style</p>
                         </div>
                       </div>
-                    ) : (
-                      lessonPlanImages[displayedLessonPlan].map((image, index) => (
-                        <div key={index} className="bg-[#0a0a25] rounded p-2 aspect-[4/3] flex flex-col">
-                          <div className="bg-[#0a0a30] rounded flex-1 mb-2 overflow-hidden">
-                            <img
-                              src={image.src || "/placeholder.svg"}
-                              alt={image.alt}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div className="h-3 bg-[#0a0a30] rounded w-full flex items-center px-1">
-                            <div className="h-1.5 bg-[#3a00b0] rounded w-full"></div>
-                          </div>
-                        </div>
-                      ))
-                    )}
+                    </div>
+                  </div>
+
+                  <div className="md:w-2/12 flex justify-center items-center order-1 md:order-2 mb-6 md:mb-0">
+                    <div className="w-16 h-16 rounded-full bg-[#0a0a35] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="text-[#00f0ff] font-bold">2</div>
+                    </div>
+                  </div>
+
+                  <div className="md:w-5/12 md:pl-8 mb-6 md:mb-0 order-2 md:order-3">
+                    <h4 className="text-xl font-bold mb-2 text-[#00f0ff]">AI Content Analysis</h4>
+                    <p className="text-gray-400">
+                      AI processes the lesson plan, identifying key concepts that need visualization and determining the
+                      optimal sequence
+                    </p>
                   </div>
                 </div>
 
-                {/* Animated circuit paths */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                  <motion.path
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 0.3 }}
-                    transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, repeatType: "loop" }}
-                    d="M0,50 C50,50 50,100 100,100 C150,100 150,50 200,50 C250,50 250,100 300,100"
-                    stroke="#00f0ff"
-                    strokeWidth="1"
-                    fill="none"
-                  />
-                  <motion.path
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 0.3 }}
-                    transition={{ duration: 3, delay: 1, repeat: Number.POSITIVE_INFINITY, repeatType: "loop" }}
-                    d="M0,70 C70,70 70,120 140,120 C210,120 210,70 280,70"
-                    stroke="#3a00b0"
-                    strokeWidth="1"
-                    fill="none"
-                  />
-                </svg>
+                {/* Step 3: Storyboard Generation */}
+                <div className="flex flex-col md:flex-row items-center mb-16 relative">
+                  <div className="md:w-5/12 md:pr-8 mb-6 md:mb-0 md:text-right order-2 md:order-1">
+                    <h4 className="text-xl font-bold mb-2 text-[#00f0ff]">Storyboard Creation</h4>
+                    <p className="text-gray-400">
+                      AI generates a complete storyboard with visual representations of each key concept in the
+                      photosynthesis process
+                    </p>
+                  </div>
+
+                  <div className="md:w-2/12 flex justify-center items-center order-1 md:order-2 mb-6 md:mb-0">
+                    <div className="w-16 h-16 rounded-full bg-[#0a0a35] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="text-[#00f0ff] font-bold">3</div>
+                    </div>
+                  </div>
+
+                  <div className="md:w-5/12 md:pl-8 order-3">
+                    <div className="bg-[#0a0a35] p-3 rounded-lg border border-[#3a00b0]/50">
+                      <div className="text-xs text-gray-400 mb-2">Generated Storyboard:</div>
+                      <div className="grid grid-cols-3 gap-2">
+                        {lessonPlanImages.photosynthesis.slice(0, 6).map((image, index) => (
+                          <div key={index} className="aspect-[4/3] bg-[#0a0a25] rounded overflow-hidden p-1">
+                            <div className="w-full h-full relative">
+                              <img
+                                src={image.src || "/placeholder.svg"}
+                                alt={image.alt}
+                                className="w-full h-full object-cover rounded"
+                              />
+                              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[#0a0a30]">
+                                <div className="h-full bg-[#3a00b0] rounded w-full"></div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 4: Final Output */}
+                <div className="flex flex-col md:flex-row items-center relative">
+                  <div className="md:w-5/12 md:pr-8 order-3 md:order-1">
+                    <div className="bg-[#0a0a35] p-3 rounded-lg border border-[#3a00b0]/50">
+                      <div className="text-xs text-gray-400 mb-2">Available Output Formats:</div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-[#0a0a25] p-2 rounded border border-[#3a00b0]/30 text-center">
+                          <div className="text-[#00f0ff] text-sm font-medium">Interactive</div>
+                          <div className="text-xs text-gray-400">Web-based view</div>
+                        </div>
+                        <div className="bg-[#0a0a25] p-2 rounded border border-[#3a00b0]/30 text-center">
+                          <div className="text-[#00f0ff] text-sm font-medium">PDF</div>
+                          <div className="text-xs text-gray-400">Print-ready</div>
+                        </div>
+                        <div className="bg-[#0a0a25] p-2 rounded border border-[#3a00b0]/30 text-center">
+                          <div className="text-[#00f0ff] text-sm font-medium">Images</div>
+                          <div className="text-xs text-gray-400">Individual files</div>
+                        </div>
+                        <div className="bg-[#0a0a25] p-2 rounded border border-[#3a00b0]/30 text-center">
+                          <div className="text-[#00f0ff] text-sm font-medium">Presentation</div>
+                          <div className="text-xs text-gray-400">Slide format</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="md:w-2/12 flex justify-center items-center order-1 md:order-2 mb-6 md:mb-0">
+                    <div className="w-16 h-16 rounded-full bg-[#0a0a35] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="text-[#00f0ff] font-bold">4</div>
+                    </div>
+                  </div>
+
+                  <div className="md:w-5/12 md:pl-8 mb-6 md:mb-0 order-2 md:order-3">
+                    <h4 className="text-xl font-bold mb-2 text-[#00f0ff]">Ready for Use</h4>
+                    <p className="text-gray-400">
+                      The completed storyboard is ready for download in multiple formats or can be viewed directly in
+                      the browser
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Try it button */}
+              <div className="mt-12 text-center">
+                <Link href="/storyboard-preview">
+                  <Button className="bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] hover:opacity-90 transition-opacity">
+                    Try With Your Own Lesson Plan
+                  </Button>
+                </Link>
               </div>
             </div>
+
+            {/* Add keyframes for the flow animation */}
+            <style jsx>{`
+              @keyframes flowDown {
+                0% {
+                  opacity: 0;
+                  transform: translateX(-50%) translateY(-20px);
+                }
+                50% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 0;
+                  transform: translateX(-50%) translateY(300px);
+                }
+              }
+            `}</style>
           </div>
         </TabsContent>
 

@@ -1,14 +1,29 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
-import { BookOpen, Cpu, Download, Globe, Lightbulb, Lock, Palette, School, Users } from "lucide-react"
+import { BookOpen, Cpu, Download, Globe, Lightbulb, Lock, Palette, School, Users, User } from "lucide-react"
 import Link from "next/link"
-import HeroAnimation from "@/components/hero-animation"
+import Image from "next/image"
+import { useState, useEffect } from "react"
 import ProblemStatement from "@/components/problem-statement"
-import HowItWorks from "@/components/how-it-works"
 import BenefitCard from "@/components/benefit-card"
 import PersonaCard from "@/components/persona-card"
 import DemoPreview from "@/components/demo-preview"
 
 export default function Home() {
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  // Check if user is signed in (this would typically use a more robust auth check)
+  useEffect(() => {
+    // Mock authentication check - in a real app, this would check cookies, local storage, or an auth provider
+    const checkAuth = () => {
+      const hasSession = localStorage.getItem("userSession")
+      setIsSignedIn(!!hasSession)
+    }
+
+    checkAuth()
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#050510] text-white overflow-hidden">
       {/* Navigation */}
@@ -29,19 +44,32 @@ export default function Home() {
           <Link href="#demo" className="text-gray-300 hover:text-white transition-colors">
             Demo
           </Link>
-          <Link href="#download" className="text-gray-300 hover:text-white transition-colors">
-            Download
+          <Link href="/feedback" className="text-gray-300 hover:text-white transition-colors">
+            Feedback
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/sign-in">
-            <Button variant="ghost" className="text-gray-300 hover:text-white">
-              Sign In
-            </Button>
-          </Link>
-          <Button className="bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] hover:opacity-90 transition-opacity">
-            Get Started
-          </Button>
+          {isSignedIn ? (
+            <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
+              <div className="w-10 h-10 rounded-full bg-[#3a00b0]/30 flex items-center justify-center border border-[#3a00b0]">
+                <User className="w-5 h-5 text-[#00f0ff]" />
+              </div>
+              <span className="text-sm hidden sm:inline">My Account</span>
+            </div>
+          ) : (
+            <>
+              <Link href="/sign-in">
+                <Button variant="ghost" className="text-gray-300 hover:text-white">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/sign-in">
+                <Button className="bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] hover:opacity-90 transition-opacity">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -114,16 +142,45 @@ export default function Home() {
                   Generate a Storyboard
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                className="border-[#00f0ff] text-[#00f0ff] hover:bg-[#00f0ff]/10 text-lg py-6 px-8"
-              >
-                See How It Works
-              </Button>
+              <Link href="#how-it-works">
+                <Button
+                  variant="outline"
+                  className="border-[#00f0ff] text-[#00f0ff] hover:bg-[#00f0ff]/10 text-lg py-6 px-8"
+                >
+                  See How It Works
+                </Button>
+              </Link>
             </div>
           </div>
           <div className="relative z-10">
-            <HeroAnimation />
+            <div className="relative w-full aspect-video max-w-2xl mx-auto overflow-hidden rounded-lg shadow-[0_0_30px_rgba(0,240,255,0.3)]">
+              <Image
+                src="/images/futuristic-concept.png"
+                alt="Futuristic AI-generated storyboard concept"
+                width={1200}
+                height={800}
+                className="w-full h-full object-cover transition-transform hover:scale-105 duration-700"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050510]/70 to-transparent"></div>
+              <div className="absolute inset-0 border border-[#3a00b0]/30 rounded-lg"></div>
+
+              {/* Tech overlay elements */}
+              <div className="absolute top-4 right-4 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#00f0ff] animate-pulse"></div>
+                <div className="text-xs text-[#00f0ff] font-mono">AI ENHANCED</div>
+              </div>
+
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="h-1 w-full bg-[#0a0a25] rounded-full overflow-hidden">
+                  <div className="h-full w-3/4 bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] rounded-full"></div>
+                </div>
+                <div className="flex justify-between mt-2 text-xs text-gray-300 font-mono">
+                  <span>STORYBOARD GENERATION</span>
+                  <span>75%</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -148,7 +205,172 @@ export default function Home() {
             How It{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3a00b0] to-[#00f0ff]">Works</span>
           </h2>
-          <HowItWorks />
+
+          <div className="relative max-w-5xl mx-auto">
+            {/* Animated connecting lines */}
+            <div
+              className="absolute left-1/2 top-12 bottom-12 w-1 bg-gradient-to-b from-[#3a00b0] to-[#00f0ff] hidden md:block"
+              style={{ transform: "translateX(-50%)" }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-[#3a00b0] to-[#00f0ff] animate-pulse opacity-50"></div>
+            </div>
+
+            {/* Horizontal connecting lines for desktop */}
+            <div className="hidden md:block">
+              {[0, 1, 2, 3].map((index) => (
+                <div
+                  key={index}
+                  className={`absolute top-[${index * 25 + 12}%] ${index % 2 === 0 ? "right-1/2" : "left-1/2"} w-[15%] h-0.5`}
+                >
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-${index % 2 === 0 ? "l" : "r"} from-transparent to-[#00f0ff] animate-pulse`}
+                  ></div>
+                </div>
+              ))}
+            </div>
+
+            {/* Flowchart steps */}
+            <div className="space-y-24">
+              {/* Step 1 */}
+              <div className="relative">
+                <div className="md:flex items-center">
+                  <div className="md:w-1/2 md:pr-12 mb-8 md:mb-0 md:text-right order-1">
+                    <h3 className="text-2xl font-bold mb-3 text-white relative z-10">Upload Lesson Plan</h3>
+                    <p className="text-gray-400 relative z-10 md:pr-6">
+                      Upload your text-based lesson plan or curriculum document in various formats (PDF, DOCX, TXT).
+                    </p>
+                  </div>
+                  <div className="md:w-1/2 flex justify-center order-2">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-[#0a0a25] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                        <div className="w-16 h-16 rounded-full bg-[#0a0a35] flex items-center justify-center">
+                          <div className="text-[#00f0ff] text-2xl font-bold">1</div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="absolute -inset-2 rounded-full border-2 border-dashed border-[#3a00b0] animate-spin-slow"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative">
+                <div className="md:flex items-center">
+                  <div className="md:w-1/2 flex justify-center order-1 md:order-2">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-[#0a0a25] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                        <div className="w-16 h-16 rounded-full bg-[#0a0a35] flex items-center justify-center">
+                          <div className="text-[#00f0ff] text-2xl font-bold">2</div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="absolute -inset-2 rounded-full border-2 border-dashed border-[#3a00b0] animate-spin-slow"></div>
+                    </div>
+                  </div>
+                  <div className="md:w-1/2 md:pl-12 mb-8 md:mb-0 order-2 md:order-1">
+                    <h3 className="text-2xl font-bold mb-3 text-white relative z-10">AI Identifies Key Scenes</h3>
+                    <p className="text-gray-400 relative z-10 md:pl-6">
+                      Our AI analyzes your content and identifies the key scenes and concepts that should be visualized.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative">
+                <div className="md:flex items-center">
+                  <div className="md:w-1/2 md:pr-12 mb-8 md:mb-0 md:text-right order-1">
+                    <h3 className="text-2xl font-bold mb-3 text-white relative z-10">Optional Image Generation</h3>
+                    <p className="text-gray-400 relative z-10 md:pr-6">
+                      Choose to generate images locally using built-in Stable Diffusion models for complete privacy.
+                    </p>
+                  </div>
+                  <div className="md:w-1/2 flex justify-center order-2">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-[#0a0a25] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                        <div className="w-16 h-16 rounded-full bg-[#0a0a35] flex items-center justify-center">
+                          <div className="text-[#00f0ff] text-2xl font-bold">3</div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="absolute -inset-2 rounded-full border-2 border-dashed border-[#3a00b0] animate-spin-slow"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="relative">
+                <div className="md:flex items-center">
+                  <div className="md:w-1/2 flex justify-center order-1 md:order-2">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-[#0a0a25] border-2 border-[#3a00b0] flex items-center justify-center z-10 relative">
+                        <div className="w-16 h-16 rounded-full bg-[#0a0a35] flex items-center justify-center">
+                          <div className="text-[#00f0ff] text-2xl font-bold">4</div>
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-[#00f0ff] opacity-20 animate-ping"></div>
+                      <div className="absolute -inset-2 rounded-full border-2 border-dashed border-[#3a00b0] animate-spin-slow"></div>
+                    </div>
+                  </div>
+                  <div className="md:w-1/2 md:pl-12 mb-8 md:mb-0 order-2 md:order-1">
+                    <h3 className="text-2xl font-bold mb-3 text-white relative z-10">Download or Preview</h3>
+                    <p className="text-gray-400 relative z-10 md:pl-6">
+                      Preview your storyboard instantly and download in various formats for presentation or printing.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Data flow animation */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full bg-[#00f0ff]"
+                  style={{
+                    left: "50%",
+                    top: `${Math.random() * 100}%`,
+                    opacity: 0.7,
+                    transform: "translateX(-50%)",
+                    animation: `flowDown 4s infinite ${i * 0.5}s`,
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Add keyframes for the flow animation */}
+          <style jsx>{`
+            @keyframes flowDown {
+              0% {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+              }
+              50% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+                transform: translate(-50%, 100vh);
+              }
+            }
+            
+            @keyframes spin-slow {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+            
+            .animate-spin-slow {
+              animation: spin-slow 15s linear infinite;
+            }
+          `}</style>
         </div>
       </section>
 
@@ -249,15 +471,19 @@ export default function Home() {
               Download StoryboardAI today and start creating engaging visual storyboards in minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] hover:opacity-90 transition-opacity text-lg py-6 px-8">
-                Download Now
-              </Button>
-              <Button
-                variant="outline"
-                className="border-[#00f0ff] text-[#00f0ff] hover:bg-[#00f0ff]/10 text-lg py-6 px-8"
-              >
-                View Documentation
-              </Button>
+              <Link href="/storyboard-preview">
+                <Button className="bg-gradient-to-r from-[#3a00b0] to-[#00f0ff] hover:opacity-90 transition-opacity text-lg py-6 px-8">
+                  Generate a Storyboard
+                </Button>
+              </Link>
+              <Link href="https://github.com/storyboardai/documentation" target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="outline"
+                  className="border-[#00f0ff] text-[#00f0ff] hover:bg-[#00f0ff]/10 text-lg py-6 px-8"
+                >
+                  View Documentation
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -337,8 +563,8 @@ export default function Home() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-gray-400 hover:text-white transition-colors">
-                    Privacy Policy
+                  <Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">
+                    Feedback
                   </Link>
                 </li>
                 <li>
