@@ -75,7 +75,7 @@ export default function StoryboardPreview() {
               </div>
             </div>
           ) : (
-            <iframe src={url} className="w-full h-full min-h-[80vh]" title="Storyboard Preview" allowFullScreen />
+            <iframe src="https://357a4330fbf0fb143d.gradio.live" className="w-full h-full min-h-[80vh]" title="Storyboard Preview" allowFullScreen />
           )}
         </div>
       </main>
